@@ -4,6 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody _rb;
     private Animator _animator;
+    private float _turnSpeed = 20.0f;
 
     private Vector3 _direction;
 
@@ -30,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void LookAt(Vector3 direction)
     {
-        Vector3 desiredForward = Vector3.RotateTowards(transform.forward, direction, 20.0f * Time.deltaTime, 0.0f);
+        Vector3 desiredForward = Vector3.RotateTowards(transform.forward, direction, _turnSpeed * Time.deltaTime, 0.0f);
 
         transform.rotation = Quaternion.LookRotation(desiredForward);
     }
