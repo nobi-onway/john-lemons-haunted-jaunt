@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameEnding : MonoBehaviour
 {
@@ -8,6 +10,12 @@ public class GameEnding : MonoBehaviour
     private GameObject _player;
     [SerializeField]
     private CanvasGroup _exitBgCanvasGroup;
+    [SerializeField]
+    private CanvasGroup _caughtBgCanvasGroup;
+    [SerializeField]
+    private AudioSource _caughtAudio;
+    [SerializeField]
+    private AudioSource _escapeAudio;
 
     private const float FADE_DURATION = 1.0f;
     private const float DISPLAY_IMAGE_DURATION = 1.0f;
@@ -16,21 +24,30 @@ public class GameEnding : MonoBehaviour
     {
         if(other.gameObject == _player)
         {
-            StartCoroutine(EndLevel());
+            StartCoroutine(EndLevel(_exitBgCanvasGroup, () => Application.Quit(), _escapeAudio));
         }
     }
 
-    private IEnumerator EndLevel()
+    public void CaughtPlayer()
     {
+        StartCoroutine(EndLevel(_caughtBgCanvasGroup, () =>
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }, _caughtAudio));
+    }
+
+    private IEnumerator EndLevel(CanvasGroup bgCanvasGroup, Action onEndLevel, AudioSource audio)
+    {
+        audio.Play();
         float timer = 0;
 
         while(timer < FADE_DURATION + DISPLAY_IMAGE_DURATION)
         {
             timer += Time.deltaTime;
-            _exitBgCanvasGroup.alpha = timer / FADE_DURATION;
+            bgCanvasGroup.alpha = timer / FADE_DURATION;
             yield return new WaitForEndOfFrame();
         }
 
-        Application.Quit();
+        onEndLevel?.Invoke();
     }
 }
