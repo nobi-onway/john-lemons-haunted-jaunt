@@ -4,6 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody _rb;
     private Animator _animator;
+    private AudioSource _footStepAudio;
     private float _turnSpeed = 20.0f;
 
     private Vector3 _direction;
@@ -12,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
+        _footStepAudio = GetComponent<AudioSource>();
     }
 
     private void FixedUpdate()
@@ -40,6 +42,17 @@ public class PlayerMovement : MonoBehaviour
     {
         bool isWalking = direction != Vector3.zero;
         _animator.SetBool("IsWalking", isWalking);
+
+        if(isWalking)
+        {
+            if (_footStepAudio.isPlaying) return;
+            _footStepAudio.Play();
+        }
+        else
+        {
+            _footStepAudio.Stop();
+        }
+
     }
 
     private void OnAnimatorMove()
