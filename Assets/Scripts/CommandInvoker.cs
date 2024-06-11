@@ -28,4 +28,10 @@ public class CommandInvoker
         _undoStack.Push(command);
         command.Execute();
     }
+
+    public static void ResetCommand()
+    {
+        _redoStack.Clear();
+        _undoStack.Clear();
+    }
 }

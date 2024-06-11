@@ -9575,6 +9575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2abc7f8cd211c9418155e92ceb1e345, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _lineRenderer: {fileID: 1774219405}
   _sphere: {fileID: 1052951745174878167, guid: 3798dae8616a3ff458e9bbe4388382b7, type: 3}
 --- !u!4 &1774219407
 Transform:

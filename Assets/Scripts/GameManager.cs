@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
     private GameState State { get { return _state; } set { _state = value; OnStateChange?.Invoke(value); } }
     private Action<GameState> OnStateChange;
 
+    private Coroutine _movementScheduleCoroutine;
+
 
     private void Start()
     {
@@ -37,7 +39,14 @@ public class GameManager : MonoBehaviour
         {
             if(state == GameState.planning)
             {
-                StartCoroutine(GameLoop());
+                if(_movementScheduleCoroutine != null) StopCoroutine(_movementScheduleCoroutine);
+                CommandInvoker.ResetCommand();
+                PlanForMoving();
+            }
+
+            if(state == GameState.running)
+            {
+                _movementScheduleCoroutine = StartCoroutine(InvokeMovementSchedule());
             }
 
             _startButton.gameObject.SetActive(state == GameState.planning);
@@ -56,20 +65,12 @@ public class GameManager : MonoBehaviour
         State = GameState.planning;
     }
 
-    private IEnumerator GameLoop()
-    {
-        yield return StartCoroutine(PlanForMoving());
-        yield return StartCoroutine(InvokeMovementSchedule());
-    }
 
-    private IEnumerator PlanForMoving()
+    private void PlanForMoving()
     {
+        _playerMover.PathRenderer.ResetPath();
+        _playerMover.PathRenderer.AddPoint(_playerMover.transform.position);
         _playerStartPosition = _playerMovement.transform.position;
-
-        while (_state ==  GameState.planning)
-        {
-            yield return null;
-        }
     }
 
     private IEnumerator InvokeMovementSchedule()
@@ -86,13 +87,12 @@ public class GameManager : MonoBehaviour
         }
 
 
-        while(pathQueue.Count > 0 && _state == GameState.running)
+        while(pathQueue.Count > 0)
         {
             Vector3 destination = pathQueue.Dequeue();
             yield return StartCoroutine(MovePlayerTo(destination));
         }
 
-        _playerMover.PathRenderer.ResetPath();
         State = GameState.planning;
     }
 

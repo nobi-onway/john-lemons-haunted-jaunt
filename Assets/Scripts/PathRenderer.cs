@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class PathRenderer : MonoBehaviour
 {
+    [SerializeField]
     private LineRenderer _lineRenderer;
     private Stack<GameObject> _markPoints;
     [SerializeField]
     private GameObject _sphere;
 
-    private void Start()
+    private Stack<GameObject> GetMarkPointStack()
     {
-        _lineRenderer = GetComponent<LineRenderer>();
-        _markPoints = new Stack<GameObject>();
+        if (_markPoints == null) _markPoints = new Stack<GameObject>();
+
+        return _markPoints;
     }
     
     public void AddPoint(Vector3 point)
@@ -20,20 +22,20 @@ public class PathRenderer : MonoBehaviour
         Vector3 newPoint = point;
         newPoint.y = 1;
         GameObject markedPoint = Instantiate(_sphere, newPoint, Quaternion.identity);
-        _markPoints.Push(markedPoint);
+        GetMarkPointStack().Push(markedPoint);
         RenderPath();
     }
 
     public void RemovePoint()
     {
-        GameObject markPoint = _markPoints.Pop();
+        GameObject markPoint = GetMarkPointStack().Pop();
         Destroy(markPoint);
         RenderPath();
     }
 
     public List<Vector3> GetPathList()
     {
-        List<Vector3> pathList = _markPoints.Select(mark => mark.transform.position).ToList();
+        List<Vector3> pathList = GetMarkPointStack().Select(mark => mark.transform.position).ToList();
         pathList.Reverse();
         return pathList;
     }
@@ -42,7 +44,7 @@ public class PathRenderer : MonoBehaviour
     {
         if (_markPoints == null) return;
 
-        List<GameObject> markPoints = _markPoints.ToList();
+        List<GameObject> markPoints = GetMarkPointStack().ToList();
         for(int i = 0; i < markPoints.Count; i++)
         {
             markPoints[i].SetActive(canShow);
@@ -52,12 +54,19 @@ public class PathRenderer : MonoBehaviour
 
     public void ResetPath()
     {
-        _markPoints.Clear();
+        while(GetMarkPointStack().Count > 0)
+        {
+            GameObject markedPoint = GetMarkPointStack().Pop();
+            Destroy(markedPoint);
+        }
+
+        GetMarkPointStack().Clear();
+        RenderPath();
     }
 
     private void RenderPath()
     {
-        _lineRenderer.positionCount = _markPoints.Count;
+        _lineRenderer.positionCount = GetMarkPointStack().Count;
         _lineRenderer.SetPositions(GetPathList().ToArray());
     }
 }

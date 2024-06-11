@@ -19,7 +19,7 @@ public class InputManager : MonoBehaviour
     [SerializeField]
     private PlayerMover _playerMover;
 
-    private void OnEnable()
+    private void Start()
     {
         AddEventListener();
     }

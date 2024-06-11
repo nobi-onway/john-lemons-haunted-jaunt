@@ -11,11 +11,6 @@ public class PlayerMover : MonoBehaviour
 
     private float _boadSpacing = 1.0f;
 
-    private void Start()
-    {
-        _pathRenderer.AddPoint(transform.position);
-    }
-
     public void Move(Vector3 movement)
     {
         transform.position += movement;
