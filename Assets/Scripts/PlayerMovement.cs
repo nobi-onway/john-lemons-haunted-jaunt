@@ -9,26 +9,14 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 _direction;
 
+    private PlayerMover _playerMover;
+
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
         _footStepAudio = GetComponent<AudioSource>();
-    }
-
-    private void FixedUpdate()
-    {
-        ListenInput();
-        LookAt(_direction);
-        WalkTo(_direction);
-    }
-
-    private void ListenInput()
-    {
-        float verticalInput = Input.GetAxis("Vertical");
-        float horizontalInput = Input.GetAxis("Horizontal");
-
-        _direction = new Vector3(horizontalInput, 0, verticalInput).normalized;
+        _playerMover = GetComponent<PlayerMover>();
     }
 
     private void LookAt(Vector3 direction)

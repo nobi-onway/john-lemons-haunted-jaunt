@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6524369312127498319}
   - component: {fileID: 8825637519959796880}
   - component: {fileID: 4278164791066489994}
+  - component: {fileID: 7662651551139607991}
   m_Layer: 0
   m_Name: JohnLemon
   m_TagString: Untagged
@@ -225,6 +226,22 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3427784789409190083}
   m_Enabled: 1
+--- !u!114 &7662651551139607991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3427784789409190083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22f0644ab58992f4da4dab69f504e2cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  _pathRenderer: {fileID: 0}
 --- !u!1001 &3762291715128393721
 PrefabInstance:
   m_ObjectHideFlags: 0
