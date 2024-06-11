@@ -33,7 +33,26 @@ public class PathRenderer : MonoBehaviour
 
     public List<Vector3> GetPathList()
     {
-        return _markPoints.Select(mark => mark.transform.position).ToList();
+        List<Vector3> pathList = _markPoints.Select(mark => mark.transform.position).ToList();
+        pathList.Reverse();
+        return pathList;
+    }
+
+    public void ShowPathIf(bool canShow)
+    {
+        if (_markPoints == null) return;
+
+        List<GameObject> markPoints = _markPoints.ToList();
+        for(int i = 0; i < markPoints.Count; i++)
+        {
+            markPoints[i].SetActive(canShow);
+        }
+        gameObject.SetActive(canShow);
+    }
+
+    public void ResetPath()
+    {
+        _markPoints.Clear();
     }
 
     private void RenderPath()

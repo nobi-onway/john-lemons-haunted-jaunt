@@ -7,16 +7,19 @@ public class PlayerMovement : MonoBehaviour
     private AudioSource _footStepAudio;
     private float _turnSpeed = 20.0f;
 
-    private Vector3 _direction;
-
-    private PlayerMover _playerMover;
+    public Vector3 Direction { get; set; }
 
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
         _footStepAudio = GetComponent<AudioSource>();
-        _playerMover = GetComponent<PlayerMover>();
+    }
+
+    private void FixedUpdate()
+    {
+        LookAt(Direction);
+        WalkTo(Direction);
     }
 
     private void LookAt(Vector3 direction)
@@ -40,12 +43,11 @@ public class PlayerMovement : MonoBehaviour
         {
             _footStepAudio.Stop();
         }
-
     }
 
     private void OnAnimatorMove()
     {
-        _rb.MovePosition(_rb.position + _direction * _animator.deltaPosition.magnitude);
+        _rb.MovePosition(_rb.position + Direction * _animator.deltaPosition.magnitude);
         _rb.MoveRotation(_rb.rotation);
     }
 }
