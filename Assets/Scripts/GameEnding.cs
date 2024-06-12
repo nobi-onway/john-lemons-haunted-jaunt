@@ -20,11 +20,18 @@ public class GameEnding : MonoBehaviour
     private const float FADE_DURATION = 1.0f;
     private const float DISPLAY_IMAGE_DURATION = 1.0f;
 
+    private PlayerMover _playerMover;
+
+    private void Start()
+    {
+        _playerMover = _player.GetComponent<PlayerMover>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject == _player)
+        if(other.gameObject == _player && !_playerMover.IsOnPlanning)
         {
-            StartCoroutine(EndLevel(_exitBgCanvasGroup, () => Application.Quit(), _escapeAudio));
+            StartCoroutine(EndLevel(_exitBgCanvasGroup, () => SceneManager.LoadScene(SceneManager.GetActiveScene().name), _escapeAudio));
         }
     }
 
