@@ -9,7 +9,7 @@ public class PlayerMover : MonoBehaviour
     private PathRenderer _pathRenderer;
     public PathRenderer PathRenderer => _pathRenderer;
 
-    private float _boadSpacing = 1.2f;
+    private float _boadSpacing = 1.3f;
 
     public bool IsOnPlanning { get; set; }
 

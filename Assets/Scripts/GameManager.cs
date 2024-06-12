@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,6 +33,9 @@ public class GameManager : MonoBehaviour
 
     private Coroutine _movementScheduleCoroutine;
 
+    [SerializeField]
+    private CinemachineVirtualCamera _virtualCamera;
+
 
     private void Start()
     {
@@ -49,6 +53,8 @@ public class GameManager : MonoBehaviour
                 _movementScheduleCoroutine = StartCoroutine(InvokeMovementSchedule());
             }
 
+            Camera.main.orthographic = state == GameState.planning;
+            _virtualCamera.gameObject.SetActive(state == GameState.planning);
             _playerMover.IsOnPlanning = state == GameState.planning;
             _startButton.gameObject.SetActive(state == GameState.planning);
             _stopButton.gameObject.SetActive(state == GameState.running);
@@ -88,8 +94,9 @@ public class GameManager : MonoBehaviour
             pathQueue.Enqueue(_playerMover.PathRenderer.GetPathList()[i]);
         }
 
+        yield return new WaitForSeconds(1);
 
-        while(pathQueue.Count > 0)
+        while (pathQueue.Count > 0)
         {
             Vector3 destination = pathQueue.Dequeue();
             yield return StartCoroutine(MovePlayerTo(destination));
