@@ -116,6 +116,7 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
+        _playerMovement.transform.position = destination;
         _playerMovement.Direction = Vector3.zero;
     }
 }
