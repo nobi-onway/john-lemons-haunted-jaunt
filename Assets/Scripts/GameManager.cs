@@ -49,10 +49,12 @@ public class GameManager : MonoBehaviour
                 _movementScheduleCoroutine = StartCoroutine(InvokeMovementSchedule());
             }
 
+            _playerMover.IsOnPlanning = state == GameState.planning;
             _startButton.gameObject.SetActive(state == GameState.planning);
             _stopButton.gameObject.SetActive(state == GameState.running);
             _inputManager.gameObject.SetActive(state == GameState.planning);
             _playerMover.PathRenderer.ShowPathIf(state == GameState.planning);
+            _playerMover.GetComponent<CapsuleCollider>().isTrigger = state == GameState.planning;
         };
 
         _startButton.onClick.AddListener(() => State = GameState.running);
