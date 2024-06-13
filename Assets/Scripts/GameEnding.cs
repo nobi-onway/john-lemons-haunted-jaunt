@@ -21,6 +21,8 @@ public class GameEnding : MonoBehaviour
     private const float DISPLAY_IMAGE_DURATION = 1.0f;
 
     private PlayerMover _playerMover;
+    [SerializeField]
+    private MissionManager _missionManager;
 
     private void Start()
     {
@@ -29,7 +31,7 @@ public class GameEnding : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject == _player && !_playerMover.IsOnPlanning)
+        if(other.gameObject == _player && !_playerMover.IsOnPlanning && _missionManager.IsCompleted)
         {
             StartCoroutine(EndLevel(_exitBgCanvasGroup, () => SceneManager.LoadScene(SceneManager.GetActiveScene().name), _escapeAudio));
         }

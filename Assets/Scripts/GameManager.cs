@@ -36,7 +36,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private CinemachineVirtualCamera _virtualCamera;
 
-
     private void Start()
     {
         OnStateChange += (state) =>
@@ -72,7 +71,6 @@ public class GameManager : MonoBehaviour
 
         State = GameState.planning;
     }
-
 
     private void PlanForMoving()
     {
